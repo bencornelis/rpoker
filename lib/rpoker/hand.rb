@@ -5,7 +5,7 @@ class Hand
   end
 
   def beats?(other_hand)
-    Ranker.new(self, other_hand).winner == self
+    Matchup.new(self, other_hand).winner == self
   end
 
   def display
@@ -85,5 +85,9 @@ class Hand
 
   def pair?
     same_values_in_sorted?(0, 1) && num_uniq_values == 4
+  end
+
+  def rank
+    (Matchup::HAND_TYPES.find { |type| send("#{type}?".to_sym) } || "high_card").gsub('_', ' ')
   end
 end

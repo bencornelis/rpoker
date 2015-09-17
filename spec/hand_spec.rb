@@ -92,6 +92,7 @@ describe Hand do
   let(:straight)        { Hand.new("4s 7h 5s 6h 8d") }
   let(:flush)           { Hand.new("9h Jh Ah 2h 3h") }
   let(:full_house)      { Hand.new("3c 3d Qs Qh 3h") }
+  let(:four_of_a_kind)  { Hand.new("Th Tc Ts 3d Td") }
   let(:straight_flush)  { Hand.new("8s 9s Ts Js Qs") }
 
   describe "#wheel?" do
@@ -123,6 +124,13 @@ describe Hand do
     end
   end
 
+  describe "#four_of_a_kind?" do
+    it "sees if the hand is has four of a kind" do
+      expect(four_of_a_kind.four_of_a_kind?).to be(true)
+      expect(full_house.four_of_a_kind?).to be(false)
+    end
+  end
+
   describe "#full_house?" do
     it "sees if the hand is a full house" do
       expect(full_house.full_house?).to be(true)
@@ -141,6 +149,13 @@ describe Hand do
     it "sees if the hand is two pair" do
       expect(two_pair.two_pair?).to be(true)
       expect(pair.two_pair?).to be(false)
+    end
+  end
+
+  describe "rank" do
+    it "gives the rank of the hand" do
+      expect(Matchup::HAND_TYPES.map { |hand_type|
+        send(hand_type.to_sym).rank == hand_type.gsub("_", " ") }).to all ( be(true) )
     end
   end
 end
