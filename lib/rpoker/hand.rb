@@ -9,7 +9,7 @@ class Hand
   end
 
   def display
-    print cards.map {|card| card.to_s }.join(', ')
+    print cards.map {|card| card.to_s }.join(" ")
   end
 
   def suits
@@ -46,7 +46,7 @@ class Hand
     @num_uniq_values ||= values.uniq.size
   end
 
-  def same_values?(start, stop)
+  def same_values_in_sorted?(start, stop)
     values_slice = values_sorted_by_count[start..stop]
     values_slice.all? { |value| value == values_slice.first }
   end
@@ -68,22 +68,22 @@ class Hand
   end
 
   def full_house?
-    same_values?(0, 2) && same_values?(3, 4)
+    same_values_in_sorted?(0, 2) && same_values_in_sorted?(3, 4)
   end
 
   def four_of_a_kind?
-    same_values?(0, 3)
+    same_values_in_sorted?(0, 3)
   end
 
   def three_of_a_kind?
-    same_values?(0, 2) && num_uniq_values == 3
+    same_values_in_sorted?(0, 2) && num_uniq_values == 3
   end
 
   def two_pair?
-    same_values?(0, 1) && same_values?(2, 3) && num_uniq_values == 3
+    same_values_in_sorted?(0, 1) && same_values_in_sorted?(2, 3) && num_uniq_values == 3
   end
 
   def pair?
-    same_values?(0, 1) && num_uniq_values == 4
+    same_values_in_sorted?(0, 1) && num_uniq_values == 4
   end
 end
