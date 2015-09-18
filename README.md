@@ -1,3 +1,6 @@
+### rpoker
+===
+
 rpoker is a ruby library for comparing and ranking poker hands
 
 ### Install
@@ -12,7 +15,7 @@ gem install rpoker
 hand1 = Hand.new("As Qh Jd Jh Qs")
 hand2 = Hand.new(["2s", "3s", "5s", "4s", "As"])
 
-hand1 > hand2
+hand1 < hand2
 # => true
 ```
 
