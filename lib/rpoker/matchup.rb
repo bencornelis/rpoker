@@ -35,9 +35,9 @@ class Matchup
     if hand1.wheel? && hand2.wheel?
       return nil
     elsif hand1.wheel?
-      return hand1
-    elsif hand2.wheel?
       return hand2
+    elsif hand2.wheel?
+      return hand1
     end
 
     # compare the numeric value pairs
