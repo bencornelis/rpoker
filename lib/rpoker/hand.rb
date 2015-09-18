@@ -2,8 +2,25 @@ class Hand
   include Comparable
   attr_reader :cards
 
-  def initialize(cards_string)
-    @cards = cards_string.split(" ").map {|s| Card.new(s)}
+  TYPES = %w(
+    straight_flush
+    four_of_a_kind
+    full_house
+    flush
+    straight
+    three_of_a_kind
+    two_pair
+    pair
+  )
+
+  def initialize(cards)
+    @cards =
+      case cards
+      when Array
+        cards.map { |card| card.is_a?(Card) ? card : Card.new(card) }
+      when String
+        cards.split(" ").map {|s| Card.new(s)}
+      end
   end
 
   def <=>(other_hand)
@@ -93,6 +110,6 @@ class Hand
   end
 
   def rank
-    (Matchup::HAND_TYPES.find { |type| send("#{type}?".to_sym) } || "high_card").gsub('_', ' ')
+    (TYPES.find { |type| send("#{type}?".to_sym) } || "high_card").gsub('_', ' ')
   end
 end

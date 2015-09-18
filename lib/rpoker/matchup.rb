@@ -1,22 +1,12 @@
 class Matchup
   attr_reader :hand1, :hand2
-  HAND_TYPES = %w(
-    straight_flush
-    four_of_a_kind
-    full_house
-    flush
-    straight
-    three_of_a_kind
-    two_pair
-    pair
-  )
 
   def initialize(hand1, hand2)
     @hand1, @hand2 = hand1, hand2
   end
 
   def winner
-    HAND_TYPES.each do |type|
+    Hand::TYPES.each do |type|
       # build the boolean type check method
       is_type = "#{type}?".to_sym
 

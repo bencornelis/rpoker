@@ -3,9 +3,23 @@ require "spec_helper"
 describe Hand do
   let(:test_hand) { Hand.new("As 3h Jd Qs 3s") }
 
-  it "has 5 cards" do
+  it "can be initialized with a string" do
     expect(test_hand.cards.size).to eq(5)
     expect(test_hand.cards).to all( be_a(Card) )
+  end
+
+  it "can be initialized with an array of cards" do
+    hand = Hand.new(%w(As 3h Jd Qs 3s).map {|s| Card.new(s)})
+
+    expect(hand.cards.size).to eq(5)
+    expect(hand.cards).to all( be_a(Card) )
+  end
+
+  it "can be initialized with an array of card strings" do
+    hand = Hand.new(%w(As 3h Jd Qs 3s))
+
+    expect(hand.cards.size).to eq(5)
+    expect(hand.cards).to all( be_a(Card) )
   end
 
   describe "#suits" do
