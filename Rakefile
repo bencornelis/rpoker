@@ -12,5 +12,3 @@ end
 
 task :default => :spec
 task :integration => :integration_spec
-
-# wget -P ./spec/fixtures http://archive.ics.uci.edu/ml/machine-learning-databases/poker/poker-hand-testing.data
