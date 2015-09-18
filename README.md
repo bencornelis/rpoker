@@ -1,6 +1,6 @@
 ### rpoker
 
-rpoker is a ruby library for comparing and ranking poker hands
+A ruby library for comparing and ranking poker hands.
 
 ### Install
 
