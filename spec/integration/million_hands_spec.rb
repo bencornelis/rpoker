@@ -3,7 +3,7 @@ require "pry"
 
 # This comes from https://archive.ics.uci.edu/ml/datasets/Poker+Hand
 
-data_file = File.expand_path(File.dirname(__FILE__) + "/fixtures/poker-hand-testing.data")
+data_file = File.expand_path(File.dirname(__FILE__) + "/../fixtures/poker-hand-testing.data")
 
 if File.exist?(data_file)
   puts "Starting integration test....this could take a while"
