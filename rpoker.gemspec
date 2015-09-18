@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'rpoker'
-  s.version     = '0.0.1'
+  s.version     = '0.0.0'
   s.date        = '2015-09-17'
   s.summary     = 'Library for comparing poker hands'
   s.description = 'Ruby library for comparing poker hands'

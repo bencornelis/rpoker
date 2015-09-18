@@ -1,15 +1,20 @@
 class Hand
+  include Comparable
   attr_reader :cards
+
   def initialize(cards_string)
     @cards = cards_string.split(" ").map {|s| Card.new(s)}
   end
 
-  def beats?(other_hand)
-    Matchup.new(self, other_hand).winner == self
+  def <=>(other_hand)
+    winner = Matchup.new(self, other_hand).winner
+    return  1 if winner == self
+    return  0 if winner == nil
+    return -1 if winner == other_hand
   end
 
   def display
-    print cards.map {|card| card.to_s }.join(" ")
+    print cards.map { |card| card.to_s }.join(" ")
   end
 
   def suits

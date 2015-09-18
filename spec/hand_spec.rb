@@ -85,77 +85,75 @@ describe Hand do
     end
   end
 
-  let(:wheel)           { Hand.new("As 3c 4h 2d 5c") }
-  let(:pair)            { Hand.new("2c 4d 5h 4c Js") }
-  let(:two_pair)        { Hand.new("2c 4d 5h 4c 5s") }
-  let(:three_of_a_kind) { Hand.new("2c 4d 5h 5c 5s") }
-  let(:straight)        { Hand.new("4s 7h 5s 6h 8d") }
-  let(:flush)           { Hand.new("9h Jh Ah 2h 3h") }
-  let(:full_house)      { Hand.new("3c 3d Qs Qh 3h") }
-  let(:four_of_a_kind)  { Hand.new("Th Tc Ts 3d Td") }
-  let(:straight_flush)  { Hand.new("8s 9s Ts Js Qs") }
-
   describe "#wheel?" do
     it "sees if the hand is a wheel" do
-      expect(wheel.wheel?).to be(true)
-      expect(pair.wheel?).to be(false)
+      expect(Hand.new("As 3c 4h 2d 5c").wheel?).to be(true)
+      expect(Hand.new("2c 4d 5h 4c Js").wheel?).to be(false)
     end
   end
 
   describe "#flush?" do
     it "sees if the hand is a flush" do
-      expect(flush.flush?).to be(true)
-      expect(three_of_a_kind.flush?).to be(false)
+      expect(Hand.new("9h Jh Ah 2h 3h").flush?).to be(true)
+      expect(Hand.new("2c 4d 5h 5c 5s").flush?).to be(false)
     end
   end
 
   describe "#straight?" do
     it "sees if the hand is a straight" do
-      expect(straight.straight?).to be(true)
-      expect(two_pair.straight?).to be(false)
+      expect(Hand.new("4s 7h 5s 6h 8d").straight?).to be(true)
+      expect(Hand.new("2c 4d 5h 4c 5s").straight?).to be(false)
     end
   end
 
   describe "#straight_flush?" do
     it "sees if the hand is a straight flush" do
-      expect(straight_flush.straight_flush?).to be(true)
-      expect(straight.straight_flush?).to be(false)
-      expect(flush.straight_flush?).to be(false)
+      expect(Hand.new("8s 9s Ts Js Qs").straight_flush?).to be(true)
+      expect(Hand.new("4s 7h 5s 6h 8d").straight_flush?).to be(false)
+      expect(Hand.new("9h Jh Ah 2h 3h").straight_flush?).to be(false)
     end
   end
 
   describe "#four_of_a_kind?" do
     it "sees if the hand is has four of a kind" do
-      expect(four_of_a_kind.four_of_a_kind?).to be(true)
-      expect(full_house.four_of_a_kind?).to be(false)
+      expect(Hand.new("Th Tc Ts 3d Td").four_of_a_kind?).to be(true)
+      expect(Hand.new("3c 3d Qs Qh 3h").four_of_a_kind?).to be(false)
     end
   end
 
   describe "#full_house?" do
     it "sees if the hand is a full house" do
-      expect(full_house.full_house?).to be(true)
-      expect(three_of_a_kind.full_house?).to be(false)
+      expect(Hand.new("3c 3d Qs Qh 3h").full_house?).to be(true)
+      expect(Hand.new("2c 4d 5h 5c 5s").full_house?).to be(false)
     end
   end
 
   describe "three_of_a_kind?" do
     it "sees if the hand is three of a kind" do
-      expect(three_of_a_kind.three_of_a_kind?).to be(true)
-      expect(pair.three_of_a_kind?).to be(false)
+      expect(Hand.new("2c 4d 5h 5c 5s").three_of_a_kind?).to be(true)
+      expect(Hand.new("2c 4d 5h 4c Js").three_of_a_kind?).to be(false)
     end
   end
 
   describe "two_pair?" do
     it "sees if the hand is two pair" do
-      expect(two_pair.two_pair?).to be(true)
-      expect(pair.two_pair?).to be(false)
+      expect(Hand.new("2c 4d 5h 4c 5s").two_pair?).to be(true)
+      expect(Hand.new("2c 4d 5h 4c Js").two_pair?).to be(false)
     end
   end
 
-  describe "rank" do
-    it "gives the rank of the hand" do
-      expect(Matchup::HAND_TYPES.map { |hand_type|
-        send(hand_type.to_sym).rank == hand_type.gsub("_", " ") }).to all ( be(true) )
+  describe "pair?" do
+    it "sees if the hand is one pair" do
+      expect(Hand.new("2c 4d 5h 4c Js").pair?).to be(true)
+      expect(Hand.new("2c 9d Jh 9c Js").pair?).to be(false)
+    end
+  end
+
+  describe "<=>" do
+    it "compares hands based on rank" do
+      expect(Hand.new("2c 4d 5h 4c 5s") > Hand.new("2c 4d 5h 4c Js")).to be(true)
+      expect(Hand.new("3c 3d Qs Qh 3h") < Hand.new("2c 4d 5h 5c 5s")).to be(false)
+      expect(Hand.new("8s 9s Ts Js Qs") == Hand.new("9h 8h Jh Th Qh")).to be(true)
     end
   end
 end
