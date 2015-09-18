@@ -1,6 +1,13 @@
 require "spec_helper"
 
 describe Matchup do
+
+  # it "raises an error when the hands share duplicate cards" do
+  #   expect {
+  #     Matchup.new(Hand.new("3c 4d Ah 9h 7d"), Hand.new("2c 3d Ah 5c 6d"))
+  #   }.to raise_error(ArgumentError, "Hands cannot share cards")
+  # end
+
   let(:hand1)  { Hand.new("Ad As 3d 2s 5d") }
   let(:hand2)  { Hand.new("Ah 9s Th Ac 3h") }
   let(:hand3)  { Hand.new("6s Jd 3c 4d Kh") }

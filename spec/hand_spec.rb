@@ -92,6 +92,11 @@ describe Hand do
     it "sorts values by multiplicity in descending order" do
       expect(test_hand.values_sorted_by_count).to eq([3, 3, 14, 12, 11])
     end
+
+    it "caches the result" do
+      expect(test_hand).to receive(:sort_values_by_count).once.and_call_original
+      2.times { test_hand.values_sorted_by_count }
+    end
   end
 
   describe "#uniq_values_sorted_by_count" do
