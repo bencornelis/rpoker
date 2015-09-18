@@ -7,6 +7,5 @@ Gem::Specification.new do |s|
   s.authors     = ['Ben Cornelis']
   s.email       = 'bencornelis02@gmail.com'
   s.files       = ['lib/rpoker.rb', 'lib/rpoker/hand.rb', 'lib/rpoker/card.rb', 'lib/rpoker/matchup.rb']
-  s.homepage    = 'http://rubygems.org/gems/rpoker'
   s.license     = 'MIT'
 end
