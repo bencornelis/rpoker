@@ -22,6 +22,28 @@ describe Hand do
     expect(hand.cards).to all( be_a(Card) )
   end
 
+  it "raises an error when the input is not an array or string" do
+    expect {
+      Hand.new(19)
+    }.to raise_error(ArgumentError, "Input must be a string or array")
+  end
+
+  it "validates input, only allowing 5 cards" do
+    expect {
+      Hand.new(%w(As 3h Jd Qs 3s Jc))
+    }.to raise_error(ArgumentError, "A hand must contain 5 cards")
+
+    expect {
+      Hand.new(%w(As 3h Jd))
+    }.to raise_error(ArgumentError, "A hand must contain 5 cards")
+  end
+
+  it "does not allow duplicates by default" do
+    expect {
+      Hand.new(%w(As 3h Jd Jd 3s))
+    }.to raise_error(ArgumentError, "By default, a hand cannot contain duplicate cards")
+  end
+
   describe "#suits" do
     it "returns an array of the card suits" do
       expect(test_hand.suits).to eq(%w(s h d s s))

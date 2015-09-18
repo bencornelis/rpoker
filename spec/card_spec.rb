@@ -9,6 +9,20 @@ describe Card do
     expect(card.suit).to eq("s")
   end
 
+  it "raises an error if the input has more than two characters" do
+    expect { Card.new("Jsc") }.to raise_error(ArgumentError, "Too many characters")
+  end
+
+  it "validates input" do
+    expect {
+      Card.new("Yc")
+    }.to raise_error(ArgumentError, "The first character must be a card value")
+
+    expect {
+      Card.new("Jm")
+    }.to raise_error(ArgumentError, "The second character must be a suit")
+  end
+
   describe "#to_s" do
     it "prints the value and suit" do
       expect(Card.new("Tc").to_s).to eq("Tc")

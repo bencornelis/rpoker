@@ -20,7 +20,11 @@ class Hand
         cards.map { |card| card.is_a?(Card) ? card : Card.new(card) }
       when String
         cards.split(" ").map {|s| Card.new(s)}
+      else
+        raise ArgumentError.new("Input must be a string or array")
       end
+
+    validate!
   end
 
   def <=>(other_hand)
@@ -111,5 +115,22 @@ class Hand
 
   def rank
     (TYPES.find { |type| send("#{type}?".to_sym) } || "high_card").gsub('_', ' ')
+  end
+
+  private
+
+  def validate!
+    validate_length!
+    check_for_duplicates!
+  end
+
+  def validate_length!
+    raise ArgumentError.new("A hand must contain 5 cards") unless cards.size == 5
+  end
+
+  def check_for_duplicates!
+    unless cards.map(&:to_s).uniq.size == 5
+      raise ArgumentError.new("By default, a hand cannot contain duplicate cards")
+    end
   end
 end

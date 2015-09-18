@@ -29,17 +29,24 @@ describe Matchup do
       expect(Matchup.new(hand1, hand2).winner).to eq(hand2)
       expect(Matchup.new(hand6, hand7).winner).to eq(hand7)
       expect(Matchup.new(hand9, hand8).winner).to eq(hand9)
+
       expect(Matchup.new(hand8, hand6).winner).to eq(hand8)
       expect(Matchup.new(hand10, hand11).winner).to eq(hand11)
       expect(Matchup.new(hand11, hand7).winner).to eq(hand11)
       expect(Matchup.new(hand10, hand12).winner).to eq(hand10)
       expect(Matchup.new(hand13, hand12).winner).to eq(hand13)
+
       expect(Matchup.new(hand14, hand7).winner).to eq(hand14)
       expect(Matchup.new(hand16, hand15).winner).to eq(hand15)
       expect(Matchup.new(hand3, hand4).winner).to eq(hand4)
       expect(Matchup.new(hand18, hand19).winner).to eq(hand18)
       expect(Matchup.new(hand20, hand14).winner).to eq(hand14)
+
       expect(Matchup.new(hand20, hand13).winner).to eq(hand13)
+      expect(Matchup.new(hand11, hand15).winner).to eq(hand11)
+      expect(Matchup.new(hand20, hand6).winner).to eq(hand20)
+      expect(Matchup.new(hand2, hand16).winner).to eq(hand16)
+      expect(Matchup.new(hand5, hand14).winner).to eq(hand14)
     end
 
     it "returns nil in case of a tie" do
