@@ -51,11 +51,4 @@ class Matchup
     end
     return nil
   end
-
-  # def validate!
-  #   all_cards = hand1.cards + hand2.cards
-  #   unless all_cards.map(&:to_s).uniq.size == 10
-  #     raise "Hands cannot share cards"
-  #   end
-  # end
 end

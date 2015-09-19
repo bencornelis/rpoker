@@ -11,7 +11,7 @@ gem install rpoker
 ### Comparing hands
 
 ```ruby
-hand1 = Hand.new("As Qh Jd Jh Qs")
+hand1 = Hand.new("Ac Qh Jd Jh Qs")
 hand2 = Hand.new(["2s", "3s", "5s", "4s", "As"])
 
 hand1 < hand2

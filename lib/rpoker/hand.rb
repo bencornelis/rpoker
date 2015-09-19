@@ -54,19 +54,12 @@ class Hand
     @sorted_values ||= num_values.sort.reverse
   end
 
-  # def values_sorted_by_count
-  #   @values_sorted_by_count ||=
-  #     [4,3,2,1].inject([]) { |sorted, n|
-  #       sorted += sorted_values.select { |value| sorted_values.count(value) == n } }
-  # end
-
-  # sort card values by their multiplicity in descending order
-  # e.g. for the hand Js 2s Jh 4s 2c the method returns [11, 11, 2, 2, 4]
   def values_sorted_by_count
     @values_sorted_by_count ||= sort_values_by_count
   end
 
-  # alternate (optimized?) implementation
+  # sort card values by their multiplicity in descending order
+  # e.g. for the hand Js 2s Jh 4s 2c the method returns [11, 11, 2, 2, 4]
   def sort_values_by_count
     vals = sorted_values.dup
     counts = Hash[vals.map { |value| [value, vals.count(value)] }]
