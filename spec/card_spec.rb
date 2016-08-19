@@ -39,13 +39,13 @@ describe Card do
     end
   end
 
-  describe "#num_value" do
-    it "returns the value of a card" do
-      expect(Card.new("9h").num_value).to eq(9)
+  describe "#to_i" do
+    it "returns the integer value of a card" do
+      expect(Card.new("9h").to_i).to eq(9)
     end
 
-    it "converts a face card to a numeric value" do
-      expect(Card.new("Kd").num_value).to eq(13)
+    it "converts a face card to an integer" do
+      expect(Card.new("Kd").to_i).to eq(13)
     end
   end
 end

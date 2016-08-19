@@ -29,7 +29,7 @@ class Card
     value.to_i.to_s != value
   end
 
-  def num_value
+  def to_i
     face_card? ? FACE_VALUES[value] : value.to_i
   end
 

@@ -22,16 +22,15 @@ class Matchup
 
     # both hands are high card rank and can be compared by
     # comparing values
-    return same_type_winner
+    same_type_winner
   end
 
   private
   # for two hands of the same type (straight, flush, etc):
-  # returns the winner by sorting the hands' numeric values
+  # returns the winner by sorting the hands' integer values
   # and then comparing value pairs in descending order
   def same_type_winner
-
-    # check for the special case where one hand is a wheel
+    # check for the special case where either hand is a wheel
     if hand1.wheel? && hand2.wheel?
       return nil
     elsif hand1.wheel?
@@ -41,14 +40,14 @@ class Matchup
     end
 
     # compare the numeric value pairs
-    values1, values2 = [hand1, hand2].map(&:uniq_values_sorted_by_count)
-    values1.zip(values2).each do |v1, v2|
+    value_pairs = hand1.int_values.zip(hand2.int_values)
+    value_pairs.each do |v1, v2|
       if v1 > v2
         return hand1
       elsif v2 > v1
         return hand2
       end
     end
-    return nil
+    nil
   end
 end

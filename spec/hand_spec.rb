@@ -1,4 +1,5 @@
 require "spec_helper"
+require "pry"
 
 describe Hand do
   let(:test_hand) { Hand.new("As 3h Jd Qs 3s") }
@@ -28,7 +29,7 @@ describe Hand do
     }.to raise_error(ArgumentError, "Input must be a string or array")
   end
 
-  it "validates input, only allowing 5 cards" do
+  it "raises an error if there are not 5 cards" do
     expect {
       Hand.new(%w(As 3h Jd Qs 3s Jc))
     }.to raise_error(ArgumentError, "A hand must contain 5 cards")
@@ -38,15 +39,21 @@ describe Hand do
     }.to raise_error(ArgumentError, "A hand must contain 5 cards")
   end
 
-  it "does not allow duplicates by default" do
+  it "raises an error if there are duplicate cards" do
     expect {
       Hand.new(%w(As 3h Jd Jd 3s))
-    }.to raise_error(ArgumentError, "By default, a hand cannot contain duplicate cards")
+    }.to raise_error(ArgumentError, "A hand cannot contain duplicate cards")
+  end
+
+  it "sorts the cards into a canonical order" do
+    expect(
+      Hand.new(%w(4s 2s Jh 2c Jc)).cards.map(&:value)
+      ).to eq %w(J J 2 2 4)
   end
 
   describe "#suits" do
-    it "returns an array of the card suits" do
-      expect(test_hand.suits).to eq(%w(s h d s s))
+    it "returns the sorted cards' suits" do
+      expect(test_hand.suits).to eq(%w(s h s s d))
     end
 
     it "caches the result" do
@@ -56,8 +63,8 @@ describe Hand do
   end
 
   describe "#values" do
-    it "returns an array of the card values" do
-      expect(test_hand.values).to eq(%w(A 3 J Q 3))
+    it "returns the sorted cards' values" do
+      expect(test_hand.values).to eq(%w(3 3 A Q J))
     end
 
     it "caches the result" do
@@ -66,63 +73,20 @@ describe Hand do
     end
   end
 
-  describe "#num_values" do
-    it "returns an array of the numeric card values" do
-      expect(test_hand.num_values).to eq([14, 3, 11, 12, 3])
+  describe "#int_values" do
+    it "returns the sorted cards' integer values" do
+      expect(test_hand.int_values).to eq([3, 3, 14, 12, 11])
     end
 
     it "caches the result" do
       expect(test_hand).to receive(:cards).once.and_call_original
-      2.times { test_hand.num_values }
-    end
-  end
-
-  describe "#sorted_values" do
-    it "returns a sorted array of the numeric card values" do
-      expect(test_hand.sorted_values).to eq([14, 12, 11, 3, 3])
-    end
-
-    it "caches the result" do
-      expect(test_hand).to receive(:num_values).once.and_call_original
-      2.times { test_hand.sorted_values }
-    end
-  end
-
-  describe "#values_sorted_by_count" do
-    it "sorts values by multiplicity in descending order" do
-      expect(test_hand.values_sorted_by_count).to eq([3, 3, 14, 12, 11])
-    end
-
-    it "caches the result" do
-      expect(test_hand).to receive(:sort_values_by_count).once.and_call_original
-      2.times { test_hand.values_sorted_by_count }
-    end
-  end
-
-  describe "#uniq_values_sorted_by_count" do
-    it "returns uniq values sorted by multiplicity" do
-      expect(test_hand.uniq_values_sorted_by_count).to eq([3, 14, 12, 11])
-    end
-
-    it "caches the result" do
-      expect(test_hand).to receive(:values_sorted_by_count).once.and_call_original
-      2.times { test_hand.uniq_values_sorted_by_count }
+      2.times { test_hand.int_values }
     end
   end
 
   describe "#num_uniq_values" do
     it "calculates the number of unique values" do
       expect(test_hand.num_uniq_values).to eq(4)
-    end
-  end
-
-  describe "#same_values_in_sorted?" do
-    it "returns true when values sorted by multiplicity are all the same in given range" do
-      expect(test_hand.same_values_in_sorted?(0, 1)).to be(true)
-    end
-
-    it "returns false otherwise" do
-      expect(test_hand.same_values_in_sorted?(1, 3)).to be(false)
     end
   end
 

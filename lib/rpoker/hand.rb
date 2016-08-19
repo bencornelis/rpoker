@@ -25,6 +25,7 @@ class Hand
       end
 
     validate!
+    sort_cards!
   end
 
   def <=>(other_hand)
@@ -46,47 +47,16 @@ class Hand
     @values ||= cards.map(&:value)
   end
 
-  def num_values
-    @num_values ||= cards.map(&:num_value)
-  end
-
-  def sorted_values
-    @sorted_values ||= num_values.sort.reverse
-  end
-
-  def values_sorted_by_count
-    @values_sorted_by_count ||= sort_values_by_count
-  end
-
-  # sort card values by their multiplicity in descending order
-  # e.g. for the hand Js 2s Jh 4s 2c the method returns [11, 11, 2, 2, 4]
-  def sort_values_by_count
-    vals = sorted_values.dup
-    counts = Hash[vals.map { |value| [value, vals.count(value)] }]
-
-    [4, 3, 2, 1].inject([]) do |sorted_by_count, n|
-      vals_with_count, vals = vals.partition { |value| counts[value] == n }
-      sorted_by_count + vals_with_count
-    end
-  end
-
-  # sort distinct card values by their multiplicity in descending order
-  # e.g. for the hand Js 2s Jh 4s 2c the method returns [11, 2, 4]
-  def uniq_values_sorted_by_count
-    @uniq_values_sorted_by_count ||= values_sorted_by_count.uniq
+  def int_values
+    @int_values ||= cards.map(&:to_i)
   end
 
   def num_uniq_values
     @num_uniq_values ||= values.uniq.size
   end
 
-  def same_values_in_sorted?(start, stop)
-    values_slice = values_sorted_by_count[start..stop]
-    values_slice.all? { |value| value == values_slice.first }
-  end
-
   def wheel?
-    sorted_values == [14, 5, 4, 3, 2]
+    values == %w(A 5 4 3 2)
   end
 
   def flush?
@@ -94,7 +64,7 @@ class Hand
   end
 
   def straight?
-    wheel? || (sorted_values.first == sorted_values.last + 4 && num_uniq_values == 5)
+    wheel? || (int_values.first == int_values.last + 4 && num_uniq_values == 5)
   end
 
   def straight_flush?
@@ -102,23 +72,23 @@ class Hand
   end
 
   def full_house?
-    same_values_in_sorted?(0, 2) && same_values_in_sorted?(3, 4)
+    same_values?(0, 2) && same_values?(3, 4)
   end
 
   def four_of_a_kind?
-    same_values_in_sorted?(0, 3)
+    same_values?(0, 3)
   end
 
   def three_of_a_kind?
-    same_values_in_sorted?(0, 2) && num_uniq_values == 3
+    same_values?(0, 2) && num_uniq_values == 3
   end
 
   def two_pair?
-    same_values_in_sorted?(0, 1) && same_values_in_sorted?(2, 3) && num_uniq_values == 3
+    same_values?(0, 1) && same_values?(2, 3) && num_uniq_values == 3
   end
 
   def pair?
-    same_values_in_sorted?(0, 1) && num_uniq_values == 4
+    same_values?(0, 1) && num_uniq_values == 4
   end
 
   def rank
@@ -126,6 +96,18 @@ class Hand
   end
 
   private
+  # sort cards by their value multiplicity in descending order
+  # e.g. sort Js 2s Jh 4s 2c as Js Jh 2s 2c 4s
+  def sort_cards!
+    vals = cards.map(&:to_i)
+    counts = Hash[vals.map { |val| [val, vals.count(val)] }]
+    @cards.sort_by! { |card| [-counts[card.to_i], -card.to_i] }
+  end
+
+  def same_values?(start, stop)
+    vals = values[start..stop]
+    vals.all? { |value| value == vals.first }
+  end
 
   def validate!
     validate_length!
@@ -138,7 +120,7 @@ class Hand
 
   def check_for_duplicates!
     unless cards.map(&:to_s).uniq.size == 5
-      raise ArgumentError.new("By default, a hand cannot contain duplicate cards")
+      raise ArgumentError.new("A hand cannot contain duplicate cards")
     end
   end
 end
