@@ -1,5 +1,4 @@
 require "spec_helper"
-require "pry"
 
 describe Hand do
   let(:test_hand) { Hand.new("As 3h Jd Qs 3s") }

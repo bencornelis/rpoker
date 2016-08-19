@@ -36,7 +36,7 @@ class Hand
   end
 
   def display
-    print cards.map { |card| card.to_s }.join(" ")
+    puts cards.join(" ")
   end
 
   def suits
