@@ -1,8 +1,8 @@
 class Card
   attr_reader :value, :suit
 
-  FACES = %w(T J Q K A)
-  SUITS = %w(h d c s)
+  FACES  = %w(T J Q K A)
+  SUITS  = %w(h d c s)
   VALUES = %w(2 3 4 5 6 7 8 9) + FACES
 
   FACE_VALUES = {

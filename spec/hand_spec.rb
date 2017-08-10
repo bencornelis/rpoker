@@ -54,45 +54,17 @@ describe Hand do
     it "returns the sorted cards' suits" do
       expect(test_hand.suits).to eq(%w(s h s s d))
     end
-
-    it "caches the result" do
-      expect(test_hand.cards).to receive(:map).once.and_call_original
-      2.times { test_hand.suits }
-    end
   end
 
   describe "#values" do
     it "returns the sorted cards' values" do
       expect(test_hand.values).to eq(%w(3 3 A Q J))
     end
-
-    it "caches the result" do
-      expect(test_hand).to receive(:cards).once.and_call_original
-      2.times { test_hand.values }
-    end
   end
 
-  describe "#int_values" do
+  describe "#nums" do
     it "returns the sorted cards' integer values" do
-      expect(test_hand.int_values).to eq([3, 3, 14, 12, 11])
-    end
-
-    it "caches the result" do
-      expect(test_hand).to receive(:cards).once.and_call_original
-      2.times { test_hand.int_values }
-    end
-  end
-
-  describe "#num_uniq_values" do
-    it "calculates the number of unique values" do
-      expect(test_hand.num_uniq_values).to eq(4)
-    end
-  end
-
-  describe "#wheel?" do
-    it "sees if the hand is a wheel" do
-      expect(Hand.new("As 3c 4h 2d 5c").wheel?).to be(true)
-      expect(Hand.new("2c 4d 5h 4c Js").wheel?).to be(false)
+      expect(test_hand.nums).to eq([3, 3, 14, 12, 11])
     end
   end
 
@@ -106,6 +78,7 @@ describe Hand do
   describe "#straight?" do
     it "sees if the hand is a straight" do
       expect(Hand.new("4s 7h 5s 6h 8d").straight?).to be(true)
+      expect(Hand.new("As 3c 4h 2d 5c").straight?).to be(true)
       expect(Hand.new("2c 4d 5h 4c 5s").straight?).to be(false)
     end
   end

@@ -1,7 +1,9 @@
 require "spec_helper"
+require "pry"
 
-HAND_TYPES = (Hand::TYPES + ["high_card"]).map { |rank| rank.gsub("_", " ") }.reverse
-HAND_RANKS = Hash[(0..8).zip(HAND_TYPES).concat([[9, "straight flush"]])]
+# 8 stands for straight flush and 9 royal flush; we classify both these as straight flush
+RANKS = [:straight_flush, *Hand::RANKS, :high_card].reverse
+RANK_MAPPING = Hash[(0..9).zip(RANKS)]
 SUITS = Hash[(1..4).zip(%w(h s d c))]
 
 def errors_against_million_hands
@@ -23,7 +25,7 @@ def errors_against_million_hands
   File.new(data_file).each do |line|
     columns = line.split(',')
 
-    expected_rank = HAND_RANKS[columns.delete_at(10).to_i]
+    expected_rank = RANKS[columns.delete_at(10).to_i]
 
     cards = []
     columns.each_slice(2) do |suit, value|
