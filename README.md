@@ -22,9 +22,9 @@ hand1 < hand2
 
 ```ruby
 hand1.rank
-# => "two pair"
+# => :two_pair
 hand2.rank
-# => "straight flush"
+# => :straight_flush
 ```
 ### Specs
 
