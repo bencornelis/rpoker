@@ -10,17 +10,19 @@ describe Card do
   end
 
   it "raises an error if the input has more than two characters" do
-    expect { Card.new("Jsc") }.to raise_error(ArgumentError, "Too many characters")
+    expect {
+      Card.new("Jsc")
+    }.to raise_error(ArgumentError, "Wrong number of characters")
   end
 
   it "validates input" do
     expect {
       Card.new("Yc")
-    }.to raise_error(ArgumentError, "The first character must be a card value")
+    }.to raise_error(ArgumentError, "Input must start with a value")
 
     expect {
       Card.new("Jm")
-    }.to raise_error(ArgumentError, "The second character must be a suit")
+    }.to raise_error(ArgumentError, "Input must end with a suit")
   end
 
   describe "#to_s" do
@@ -29,13 +31,13 @@ describe Card do
     end
   end
 
-  describe "#face_card?" do
+  describe "#face?" do
     it "is true for a face card" do
-      expect(Card.new("Js").face_card?).to be(true)
+      expect(Card.new("Js").face?).to be(true)
     end
 
     it "is false otherwise" do
-      expect(Card.new("5d").face_card?).to be(false)
+      expect(Card.new("5d").face?).to be(false)
     end
   end
 
