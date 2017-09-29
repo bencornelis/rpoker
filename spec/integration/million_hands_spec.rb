@@ -34,7 +34,7 @@ def errors_against_million_hands
 
       rp_value =
         if rp_num_value >= 10
-          Card::FACE_VALUES.invert[rp_num_value]
+          Card::FACE_TO_NUM.invert[rp_num_value]
         else
           rp_num_value
        end
