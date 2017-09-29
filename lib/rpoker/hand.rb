@@ -14,17 +14,9 @@ class Hand
   }
 
   def initialize(cards)
-    @cards =
-      case cards
-      when Array
-        cards.map { |card| card.is_a?(Card) ? card : Card.new(card) }
-      when String
-        cards.split(" ").map {|s| Card.new(s)}
-      else
-        raise ArgumentError.new("Input must be a string or array")
-      end
+    @cards = parse_cards(cards)
 
-    validate!
+    validate_cards!
     sort_cards!
   end
 
@@ -116,18 +108,32 @@ class Hand
       counts.zip(%w(a b c d e)).map { |count, l| l*count }.join.to_sym
   end
 
-  def validate!
+  def parse_cards(cards)
+    case cards
+    when Array  then cards.map { |card| card.is_a?(Card) ? card : Card.new(card) }
+    when String then cards.split(' ').map { |s| Card.new(s) }
+    else raise ArgumentError, 'Input must be a string or array'
+    end
+  end
+
+  def validate_cards!
     validate_length!
     check_for_duplicates!
   end
 
   def validate_length!
-    raise ArgumentError.new("A hand must contain 5 cards") unless cards.size == 5
+    unless cards.size == 5
+      raise ArgumentError, 'A hand must contain 5 cards'
+    end
   end
 
   def check_for_duplicates!
-    unless cards.map(&:to_s).uniq.size == 5
-      raise ArgumentError.new("A hand cannot contain duplicate cards")
+    if duplicates?
+      raise ArgumentError, 'A hand cannot contain duplicate cards'
     end
+  end
+
+  def duplicates?
+    cards.map(&:to_s).uniq.size < 5
   end
 end
