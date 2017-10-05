@@ -44,27 +44,21 @@ describe Hand do
     }.to raise_error(ArgumentError, "A hand cannot contain duplicate cards")
   end
 
-  it "sorts the cards into a canonical order" do
-    expect(
-      Hand.new(%w(4s 2s Jh 2c Jc)).cards.map(&:value)
-      ).to eq %w(J J 2 2 4)
-  end
-
-  describe "#suits" do
-    it "returns the sorted cards' suits" do
-      expect(test_hand.suits).to eq(%w(s h s s d))
+  describe "#card_suits" do
+    it "returns the card suits" do
+      expect(test_hand.card_suits).to eq(%w(s h d s s))
     end
   end
 
-  describe "#values" do
-    it "returns the sorted cards' values" do
-      expect(test_hand.values).to eq(%w(3 3 A Q J))
+  describe "#card_ranks" do
+    it "returns the card ranks" do
+      expect(test_hand.card_ranks).to eq(%w(A 3 J Q 3))
     end
   end
 
-  describe "#nums" do
-    it "returns the sorted cards' integer values" do
-      expect(test_hand.nums).to eq([3, 3, 14, 12, 11])
+  describe "#card_values" do
+    it "returns the cards' integer values" do
+      expect(test_hand.card_values).to eq([14, 3, 11, 12, 3])
     end
   end
 
@@ -123,6 +117,24 @@ describe Hand do
     it "sees if the hand is one pair" do
       expect(Hand.new("2c 4d 5h 4c Js").pair?).to be(true)
       expect(Hand.new("2c 9d Jh 9c Js").pair?).to be(false)
+    end
+  end
+
+  describe "#sort!" do
+    it "sorts the cards into a canonical order" do
+      test_hand.sort!
+
+      expect(test_hand.card_ranks).to eq %w(3 3 A Q J)
+    end
+  end
+
+  describe "#form" do
+    it "represents the hand using the same letter for the same card rank" do
+      expect(Hand.new("2c 3s 4c 5d 7h").form).to eq :abcde
+      expect(Hand.new("2c 2s 3c 5d 7h").form).to eq :aabcd
+      expect(Hand.new("2c 2s 3c 3d 7h").form).to eq :aabbc
+      expect(Hand.new("2c 2s 2d 3d 3h").form).to eq :aaabb
+      expect(Hand.new("2c 2s 2d 2h 3h").form).to eq :aaaab
     end
   end
 

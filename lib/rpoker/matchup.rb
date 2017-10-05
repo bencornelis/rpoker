@@ -12,7 +12,12 @@ class Matchup
 
   private
   def same_rank_winner
-    hand1.nums.zip(hand2.nums).each do |v1, v2|
+    hand1.sort!
+    hand2.sort!
+
+    value_pairs = hand1.card_values.zip(hand2.card_values)
+
+    value_pairs.each do |v1, v2|
       return hand1 if v1 > v2
       return hand2 if v2 > v1
     end

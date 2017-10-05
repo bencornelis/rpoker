@@ -17,7 +17,6 @@ class Hand
     @cards = parse_cards(cards)
 
     validate_cards!
-    sort_cards!
   end
 
   def <=>(other_hand)
@@ -39,15 +38,15 @@ class Hand
     puts cards.join(" ")
   end
 
-  def suits
+  def card_suits
     cards.map(&:suit)
   end
 
-  def values
-    cards.map(&:value)
+  def card_ranks
+    cards.map(&:rank)
   end
 
-  def nums
+  def card_values
     wheel? ? [5,4,3,2,1] : cards.map(&:to_i)
   end
 
@@ -56,15 +55,17 @@ class Hand
   end
 
   def flush?
-    suits.uniq.size == 1
+    card_suits.uniq.size == 1
   end
 
   def straight?
-    wheel? || (nums.first == nums.last + 4 && form == :abcde)
+    return true if wheel?
+    sorted_values = card_values.sort
+    sorted_values.last - sorted_values.first == 4 && form == :abcde
   end
 
   def wheel?
-    values == %w(A 5 4 3 2)
+    card_ranks.sort == %w(A 2 3 4 5).sort
   end
 
   def four_of_a_kind?
@@ -87,25 +88,27 @@ class Hand
     form == :aabcd
   end
 
-  private
-  # sort cards by their value multiplicity in descending order
-  # e.g. sort Js 2s Jh 4s 2c as Js Jh 2s 2c 4s
-  def sort_cards!
-    @cards.sort_by! { |card| [-value_count[card.value], -card.to_i] }
-  end
-
-  def value_count
-    @value_count ||=
-      values.each_with_object(Hash.new(0)) { |v, hsh| hsh[v] += 1 }
-  end
-
-  def counts
-    value_count.values.sort_by { |count| -count }
-  end
-
   def form
-    @form ||=
-      counts.zip(%w(a b c d e)).map { |count, l| l*count }.join.to_sym
+    @form ||= compute_form
+  end
+
+  # sort cards by their rank multiplicity in descending order
+  # e.g. sort 2s Jh 4s Js 2c as Jh Js 2s 2c 4s
+  def sort!
+    @cards.sort_by! { |card| [-card_rank_to_count[card.rank], -card.to_i] }
+  end
+
+  private
+
+  def card_rank_to_count
+    @card_rank_to_count ||=
+      card_ranks.each_with_object(Hash.new(0)) { |v, hsh| hsh[v] += 1 }
+  end
+
+  def compute_form
+    desc_rank_counts = card_rank_to_count.values.sort.reverse
+    desc_rank_counts.zip(('a'..'e'))
+      .map { |count, letter| letter * count }.join.to_sym
   end
 
   def parse_cards(cards)
