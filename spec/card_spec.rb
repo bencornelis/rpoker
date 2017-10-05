@@ -2,10 +2,10 @@ require "spec_helper"
 
 describe Card do
 
-  it "has an upcase value and downcase suit" do
+  it "has an upcase rank and downcase suit" do
     card = Card.new("Js")
 
-    expect(card.value).to eq("J")
+    expect(card.rank).to eq("J")
     expect(card.suit).to eq("s")
   end
 
@@ -18,7 +18,7 @@ describe Card do
   it "validates input" do
     expect {
       Card.new("Yc")
-    }.to raise_error(ArgumentError, "Input must start with a value")
+    }.to raise_error(ArgumentError, "Input must start with a rank")
 
     expect {
       Card.new("Jm")
@@ -26,7 +26,7 @@ describe Card do
   end
 
   describe "#to_s" do
-    it "prints the value and suit" do
+    it "prints the rank and suit" do
       expect(Card.new("Tc").to_s).to eq("Tc")
     end
   end
