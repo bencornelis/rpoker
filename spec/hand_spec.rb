@@ -129,12 +129,14 @@ describe Hand do
   end
 
   describe "#form" do
-    it "represents the hand using the same letter for the same card rank" do
-      expect(Hand.new("2c 3s 4c 5d 7h").form).to eq :abcde
-      expect(Hand.new("2c 2s 3c 5d 7h").form).to eq :aabcd
-      expect(Hand.new("2c 2s 3c 3d 7h").form).to eq :aabbc
-      expect(Hand.new("2c 2s 2d 3d 3h").form).to eq :aaabb
-      expect(Hand.new("2c 2s 2d 2h 3h").form).to eq :aaaab
+    it "represents the hand using lettes" do
+      # use A and B for duplicated ranks, x for ranks that appear only once
+      
+      expect(Hand.new("2c 3s 4c 5d 7h").form).to eq :xxxxx
+      expect(Hand.new("2c 2s 3c 5d 7h").form).to eq :AAxxx
+      expect(Hand.new("2c 2s 3c 3d 7h").form).to eq :AABBx
+      expect(Hand.new("2c 2s 2d 3d 3h").form).to eq :AAABB
+      expect(Hand.new("2c 2s 2d 2h 3h").form).to eq :AAAAx
     end
   end
 

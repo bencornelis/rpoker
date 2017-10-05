@@ -61,7 +61,7 @@ class Hand
   def straight?
     return true if wheel?
     sorted_values = card_values.sort
-    sorted_values.last - sorted_values.first == 4 && form == :abcde
+    sorted_values.last - sorted_values.first == 4 && form == :xxxxx
   end
 
   def wheel?
@@ -69,23 +69,23 @@ class Hand
   end
 
   def four_of_a_kind?
-    form == :aaaab
+    form == :AAAAx
   end
 
   def full_house?
-    form == :aaabb
+    form == :AAABB
   end
 
   def three_of_a_kind?
-    form == :aaabc
+    form == :AAAxx
   end
 
   def two_pair?
-    form == :aabbc
+    form == :AABBx
   end
 
   def pair?
-    form == :aabcd
+    form == :AAxxx
   end
 
   def form
@@ -106,9 +106,11 @@ class Hand
   end
 
   def compute_form
-    desc_rank_counts = card_rank_to_count.values.sort.reverse
-    desc_rank_counts.zip(('a'..'e'))
-      .map { |count, letter| letter * count }.join.to_sym
+    card_rank_counts      = card_rank_to_count.values.sort.reverse
+    counts_for_duplicates = card_rank_counts.select { |c| c > 1 }
+
+    counts_for_duplicates.zip(['A', 'B'])
+      .map { |count, letter| letter * count }.join.ljust(5, 'x').to_sym
   end
 
   def parse_cards(cards)
