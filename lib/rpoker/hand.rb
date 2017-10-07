@@ -20,10 +20,7 @@ class Hand
   end
 
   def <=>(other_hand)
-    winner = Matchup.new(self, other_hand).winner
-    return  1 if winner == self
-    return  0 if winner == nil
-    return -1 if winner == other_hand
+    Matchup.new(self, other_hand).winner
   end
 
   def rank

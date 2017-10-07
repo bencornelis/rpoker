@@ -5,8 +5,8 @@ class Matchup
   end
 
   def winner
-    return hand1 if hand1.rank_idx < hand2.rank_idx
-    return hand2 if hand2.rank_idx < hand1.rank_idx
+    return  1 if hand1.rank_idx < hand2.rank_idx
+    return -1 if hand2.rank_idx < hand1.rank_idx
     same_rank_winner
   end
 
@@ -18,9 +18,9 @@ class Matchup
     value_pairs = hand1.card_values.zip(hand2.card_values)
 
     value_pairs.each do |v1, v2|
-      return hand1 if v1 > v2
-      return hand2 if v2 > v1
+      return  1 if v1 > v2
+      return -1 if v2 > v1
     end
-    nil
+    0
   end
 end

@@ -131,7 +131,7 @@ describe Hand do
   describe "#form" do
     it "represents the hand using lettes" do
       # use A and B for duplicated ranks, x for ranks that appear only once
-      
+
       expect(Hand.new("2c 3s 4c 5d 7h").form).to eq :xxxxx
       expect(Hand.new("2c 2s 3c 5d 7h").form).to eq :AAxxx
       expect(Hand.new("2c 2s 3c 3d 7h").form).to eq :AABBx
@@ -144,6 +144,7 @@ describe Hand do
     it "compares hands based on rank" do
       expect(Hand.new("2c 4d 5h 4c 5s") > Hand.new("2c 4d 5h 4c Js")).to be(true)
       expect(Hand.new("3c 3d Qs Qh 3h") < Hand.new("2c 4d 5h 5c 5s")).to be(false)
+      expect(Hand.new("3c 2d Qs Qh 3h") < Hand.new("2c 4d 5h 5c 5s")).to be(true)
       expect(Hand.new("8s 9s Ts Js Qs") == Hand.new("9h 8h Jh Th Qh")).to be(true)
     end
   end
