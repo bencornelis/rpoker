@@ -16,7 +16,7 @@ class Hand
   def initialize(cards)
     @cards = parse_cards(cards)
 
-    validate_cards!
+    HandValidator.new(self).validate
   end
 
   def <=>(other_hand)
@@ -97,6 +97,14 @@ class Hand
 
   private
 
+  def parse_cards(cards)
+    case cards
+    when Array  then cards.map { |card| card.is_a?(Card) ? card : Card.new(card) }
+    when String then cards.split(' ').map { |s| Card.new(s) }
+    else raise ArgumentError, 'Input must be a string or array'
+    end
+  end
+
   def card_rank_to_count
     @card_rank_to_count ||=
       card_ranks.each_with_object(Hash.new(0)) { |v, hsh| hsh[v] += 1 }
@@ -108,34 +116,5 @@ class Hand
 
     counts_for_duplicates.zip(['A', 'B'])
       .map { |count, letter| letter * count }.join.ljust(5, 'x').to_sym
-  end
-
-  def parse_cards(cards)
-    case cards
-    when Array  then cards.map { |card| card.is_a?(Card) ? card : Card.new(card) }
-    when String then cards.split(' ').map { |s| Card.new(s) }
-    else raise ArgumentError, 'Input must be a string or array'
-    end
-  end
-
-  def validate_cards!
-    validate_length!
-    check_for_duplicates!
-  end
-
-  def validate_length!
-    unless cards.size == 5
-      raise ArgumentError, 'A hand must contain 5 cards'
-    end
-  end
-
-  def check_for_duplicates!
-    if duplicates?
-      raise ArgumentError, 'A hand cannot contain duplicate cards'
-    end
-  end
-
-  def duplicates?
-    cards.map(&:to_s).uniq.size < 5
   end
 end
